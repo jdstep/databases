@@ -1,5 +1,6 @@
-var models = require('../models');
 var bluebird = require('bluebird');
+var models = bluebird.promisifyAll(require('../models'));
+
 
 
 module.exports = {
@@ -14,14 +15,17 @@ module.exports = {
       // response.results = [{username: peter, text: "I like swiss"..} {username: jd..}]
       res.end();
     },
+
+    // a function which handles posting a message to the database
     post: function (req, res) {
       console.log("post request inside message controller");
       var message = req.body;
-      // console.log(message);
-      // insert promise here?
-      models["messages"].post(message)
-        .then(res.end);
-    } // a function which handles posting a message to the database
+
+      models["messages"].post(message).then(function(){
+        console.log("we tried");
+        res.end();
+      });
+    }
   },
 
   users: {
