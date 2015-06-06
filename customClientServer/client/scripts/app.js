@@ -32,6 +32,7 @@ app.fetch = function() {
     url: app.server.concat("classes/messages"),
     type: 'GET',
     success: function(data) {
+      console.log(data);
       app.prependNewMessages(data);
       console.log('chatterbox: Message Gotten');
     },
@@ -55,7 +56,6 @@ app.prependNewMessages = function(data) {
     return;
   }
 
-  // FACTORED OUT FOR SIMPLICITY WHEN HOOKING UP NODE SERVER
   // for each message
   _.each(data.results, function(msg) {
     // check if the message has malicious codez
