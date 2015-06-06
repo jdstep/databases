@@ -1,6 +1,8 @@
 var db = require('../db');
 var bluebird = require('bluebird');
 
+var _id = 0;
+
 
 module.exports = {
 
@@ -23,11 +25,13 @@ module.exports = {
       return new bluebird(function(resolve, reject) {
         console.log(message);
         var connection = db.database();
+        console.log("THE TYPE OF THE DATE IS " + typeof message.createdAt);
         // var queryString = "SELECT username, id"
 
-
-        var queryString = "INSERT INTO messages (userid, text, roomname, createdat) VALUES (" + 12 + ", '" + message.text + "', '" + message.roomname + "')";
-        connection.query(queryString, function(err, results){
+        var queryArgs = {messageid: ++_id, text: message.text, roomname: message.roomname, createdat: message.createdAt};
+        // var queryString = "INSERT INTO messages (userid, text, roomname, createdat) VALUES (" + 12 + ", '" + message.text + "', '" + message.roomname + "')";
+        var queryString = "INSERT INTO messages SET ?";
+        connection.query(queryString, queryArgs, function(err, results){
           console.log("inside connection, results are:" + results);
         });
         connection.end();
